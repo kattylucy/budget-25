@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Wallet, BookOpen, Calendar, Calculator, 
-  Users, DollarSign, Euro, Briefcase, LogOut
+  Users, Briefcase, LogOut
 } from "lucide-react";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -13,11 +13,6 @@ import RecurrentExpensesPage from "@/components/recurrent-expenses/RecurrentExpe
 import CalculationsPage from "@/components/calculations/CalculationsPage";
 import SharedExpensesPage from "@/components/shared-expenses/SharedExpensesPage";
 import WorkPage from "@/components/work/WorkPage";
-import { 
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import {
   SidebarProvider,
   Sidebar,
@@ -43,15 +38,9 @@ export const CurrencyContext = React.createContext<{
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState("expenses");
-  const [displayCurrency, setDisplayCurrency] = useState(() => {
-    return localStorage.getItem("preferredCurrency") || "EUR";
-  });
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
-  useEffect(() => {
-    localStorage.setItem("preferredCurrency", displayCurrency);
-  }, [displayCurrency]);
 
   React.useEffect(() => {
     if (!isAuthenticated()) {
@@ -97,12 +86,6 @@ const Dashboard = () => {
       onClick: () => setActiveSection("shared"),
       active: activeSection === "shared",
     },
-    {
-      name: "Work",
-      icon: Briefcase,
-      onClick: () => setActiveSection("work"),
-      active: activeSection === "work",
-    },
   ];
 
   const renderContent = () => {
@@ -129,13 +112,10 @@ const Dashboard = () => {
   };
 
   return (
-    <CurrencyContext.Provider value={{ displayCurrency, setDisplayCurrency }}>
       <SidebarProvider defaultOpen={!isMobile}>
         <div className="min-h-screen flex w-full bg-white">
           <AppSidebar 
             navItems={navItems} 
-            displayCurrency={displayCurrency} 
-            setDisplayCurrency={setDisplayCurrency}
             handleLogout={handleLogout}
           />
           
@@ -154,7 +134,6 @@ const Dashboard = () => {
           </main>
         </div>
       </SidebarProvider>
-    </CurrencyContext.Provider>
   );
 };
 
@@ -165,12 +144,10 @@ interface AppSidebarProps {
     onClick: () => void;
     active: boolean;
   }[];
-  displayCurrency: string;
-  setDisplayCurrency: (currency: string) => void;
   handleLogout: () => void;
 }
 
-const AppSidebar = ({ navItems, displayCurrency, setDisplayCurrency, handleLogout }: AppSidebarProps) => {
+const AppSidebar = ({ navItems, handleLogout }: AppSidebarProps) => {
   const { isMobile } = useSidebar();
   
   return (
@@ -201,52 +178,8 @@ const AppSidebar = ({ navItems, displayCurrency, setDisplayCurrency, handleLogou
         </SidebarGroup>
 
         <SidebarGroup className="mt-auto">
-          <SidebarGroupLabel>Settings</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <SidebarMenuButton className="w-full justify-between">
-                      <div className="flex items-center">
-                        {displayCurrency === "EUR" ? (
-                          <Euro className="h-5 w-5 mr-2" />
-                        ) : (
-                          <DollarSign className="h-5 w-5 mr-2" />
-                        )}
-                        <span>Currency</span>
-                      </div>
-                      <span className="text-gray-500">{displayCurrency}</span>
-                    </SidebarMenuButton>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-40 p-0">
-                    <div className="py-1">
-                      <button
-                        className={`w-full text-left px-4 py-2 text-sm ${
-                          displayCurrency === "EUR" ? "bg-gray-100 font-medium" : ""
-                        }`}
-                        onClick={() => setDisplayCurrency("EUR")}
-                      >
-                        <div className="flex items-center">
-                          <Euro className="h-4 w-4 mr-2" />
-                          <span>Euro (€)</span>
-                        </div>
-                      </button>
-                      <button
-                        className={`w-full text-left px-4 py-2 text-sm ${
-                          displayCurrency === "USD" ? "bg-gray-100 font-medium" : ""
-                        }`}
-                        onClick={() => setDisplayCurrency("USD")}
-                      >
-                        <div className="flex items-center">
-                          <DollarSign className="h-4 w-4 mr-2" />
-                          <span>US Dollar ($)</span>
-                        </div>
-                      </button>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-              </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton onClick={handleLogout}>
                   <LogOut className="h-5 w-5" />

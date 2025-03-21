@@ -30,7 +30,6 @@ const Index = () => {
       }
     };
     
-    // Animation sequence for content appearance
     const contentTimer = setTimeout(() => {
       setShowContent(true);
     }, 300);

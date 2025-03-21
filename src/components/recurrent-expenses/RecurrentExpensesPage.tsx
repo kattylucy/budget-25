@@ -94,12 +94,8 @@ const RecurrentExpensesPage = () => {
         {isLoading ? (
           <p className="text-center py-4">Loading recurring expenses...</p>
         ) : recurrentExpenses?.length === 0 ? (
-          <div className="text-center py-8 border border-dashed rounded-lg">
+          <div className="text-center py-8">
             <p className="text-gray-500 mb-2">No recurring expenses found.</p>
-            <Button onClick={() => openExpenseDialog()} size="sm">
-              <Plus className="h-4 w-4 mr-1" />
-              Add Expense
-            </Button>
           </div>
         ) : (
           <>

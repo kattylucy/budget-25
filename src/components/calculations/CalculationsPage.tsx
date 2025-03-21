@@ -339,12 +339,8 @@ const CalculationsPage = () => {
       <div className="bg-white rounded-lg shadow-sm overflow-hidden">
         <div className="flex justify-between items-center p-4 border-b">
           <h2 className="text-xl font-semibold flex items-center gap-2">
-            <BarChart3 className="h-5 w-5 text-gray-600" />
             <span>Expense Analysis</span>
           </h2>
-          <Button variant="outline" onClick={handleRefresh} disabled={isLoading}>
-            {isLoading ? "Refreshing..." : "Refresh Data"}
-          </Button>
         </div>
         
         <div className="p-4">

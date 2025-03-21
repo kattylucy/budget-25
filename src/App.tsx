@@ -9,18 +9,16 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import { isAuthenticated } from "./utils/authUtils";
 
-// Create a new QueryClient instance with better error handling
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 1,
       refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000, // 5 minutes
+      staleTime: 5 * 60 * 1000,
     },
   },
 });
 
-// Protected route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return isAuthenticated() ? <>{children}</> : <Navigate to="/" replace />;
 };
