@@ -15,13 +15,9 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
-interface ExpensesListProps {
-  expenses: Expense[];
-  isLoading: boolean;
-  onEdit: (expense: Expense) => void;
-  onDataChange: () => void;
-}
+import { useDeleteExpense } from "@/queries/useDeleteExpenses";
+import { useDeleteSavings } from "@/queries/useDeleteSavings";
+import { ExpensesListProps } from "@/types/expenses";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -29,8 +25,10 @@ const ExpensesList = ({
   expenses, 
   isLoading, 
   onEdit, 
-  onDataChange 
 }: ExpensesListProps) => {
+  const { mutateAsync } = useDeleteExpense()
+  const { mutateAsync: mutate } = useDeleteSavings()
+
   const {
     searchQuery,
     setSearchQuery,
@@ -44,39 +42,20 @@ const ExpensesList = ({
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Calculate total pages
   const totalPages = Math.ceil(filteredExpenses.length / ITEMS_PER_PAGE);
   
-  // Get current page items
   const currentItems = filteredExpenses.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
 
-  // Reset to page 1 when filters change
   React.useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, bankFilter, hideSavings]);
 
   const deleteExpense = async (id: string, category: string) => {
-    try {
-      await supabase
-        .from("expenses")
-        .delete()
-        .eq("id", id);
-      
-      if (category === "Savings") {
-        await supabase
-          .from("savings")
-          .delete()
-          .eq("id", id);
-      }
-      
-      toast.success("Expense deleted successfully");
-      onDataChange();
-    } catch (error) {
-      toast.error("Failed to delete expense. Please try again.");
-    }
+    mutateAsync(id)
+    mutate(id)
   };
 
   if (isLoading) {
@@ -103,7 +82,6 @@ const ExpensesList = ({
         expenses={currentItems}
         onEdit={onEdit}
         onDelete={deleteExpense}
-        onDataChange={onDataChange}
       />
 
       {totalPages > 1 && (

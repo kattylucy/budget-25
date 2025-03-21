@@ -18,7 +18,6 @@ interface NotesDialogProps {
   expenseId: string;
   expenseName: string;
   initialNote: string | null;
-  onSuccess: () => void;
 }
 
 const NotesDialog = ({
@@ -27,7 +26,6 @@ const NotesDialog = ({
   expenseId,
   expenseName,
   initialNote,
-  onSuccess,
 }: NotesDialogProps) => {
   const [note, setNote] = useState(initialNote || "");
   const [isSaving, setIsSaving] = useState(false);

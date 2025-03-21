@@ -1,14 +1,12 @@
 
-import React from "react";
-import IncomeEntry, { IncomeEntryType } from "./IncomeEntry";
+import { Button } from "../ui/button";
+import { Trash } from "lucide-react";
+import { IncomeEntryListProps } from "@/types/income";
+import { useDeleteIncome } from "@/queries/useDeleteIncome";
 
-interface IncomeEntryListProps {
-  entries: IncomeEntryType[];
-  onDelete: (id: string) => void;
-  isLoading?: boolean;
-}
+const IncomeEntryList = ({ entries, isLoading = false }: IncomeEntryListProps) => {
+  const { mutate } = useDeleteIncome()
 
-const IncomeEntryList = ({ entries, onDelete, isLoading = false }: IncomeEntryListProps) => {
   if (isLoading) {
     return (
       <div className="py-4">
@@ -33,11 +31,27 @@ const IncomeEntryList = ({ entries, onDelete, isLoading = false }: IncomeEntryLi
     <div>
       <ul className="divide-y divide-gray-100">
         {entries.map((entry) => (
-          <IncomeEntry 
-            key={entry.id} 
-            entry={entry} 
-            onDelete={onDelete} 
-          />
+           <li className="py-3">
+           <div className="flex justify-between items-center">
+             <div>
+               <p className="font-medium">{entry.category}</p>
+               {entry.tag && <p className="text-sm text-gray-500">{entry.tag}</p>}
+             </div>
+             <div className="flex items-center">
+               <span className="text-green-600 font-semibold mr-3">
+                 ${entry.amount.toFixed(2)}
+               </span>
+               <Button
+                 variant="ghost"
+                 size="sm"
+                 onClick={() => mutate(entry.id)}
+                 className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
+               >
+                 <Trash className="h-4 w-4" />
+               </Button>
+             </div>
+           </div>
+         </li>
         ))}
       </ul>
     </div>

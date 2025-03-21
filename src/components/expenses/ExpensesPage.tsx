@@ -1,17 +1,13 @@
 
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { Archive } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
-
-import { Expense, Income } from "./ExpenseDialog";
+import { Expense } from "./ExpenseDialog";
 import ExpensesList from "./ExpensesList";
 import IncomeSection from "./IncomeSection";
 import SummaryCards from "./SummaryCards";
 import CloseMonthDialog from "./CloseMonthDialog";
 import ExpenseFormDialog from "./ExpenseFormDialog";
-import { RecurrentExpense } from "../recurrent-expenses/RecurrentExpensesPage";
 import { useFetchExpenses } from "@/queries/useFetchExpenses";
 import { useFetchRecurrentExpenses } from "@/queries/useFetchRecurrentExpenses";
 import { useFetchIncome } from "@/queries/useFetchIncome";
@@ -20,7 +16,7 @@ const ExpensesPage = () => {
   const { data: expenses, isLoading: expensesLoading } = useFetchExpenses();
   const { data: recurrentExpenses, isLoading: recurrentExpensesLoading } = useFetchRecurrentExpenses();
   const { data: income, isLoading: incomeLoading } = useFetchIncome();
-  const totalIncome = income?.reduce((total, income) => total + income.amount, 0);
+  
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isCloseMonthDialogOpen, setIsCloseMonthDialogOpen] = useState(false);
   const [currentExpense, setCurrentExpense] = useState<Expense | null>(null);
@@ -30,12 +26,10 @@ const ExpensesPage = () => {
     setIsDialogOpen(true);
   };
 
+  const totalIncome = income?.reduce((total, income) => total + income.amount, 0);
   const regularExpensesTotal = expenses?.reduce((total, expense) => total + expense.amount, 0);
-  
   const recurrentExpensesTotal = recurrentExpenses?.reduce((total, expense) => total + expense.amount, 0);
-  
   const totalExpenses = regularExpensesTotal + recurrentExpensesTotal;
-  
   const balance = totalIncome - totalExpenses;
 
   if(expensesLoading || recurrentExpensesLoading || incomeLoading) {
@@ -44,14 +38,12 @@ const ExpensesPage = () => {
 
   return (
     <div className="space-y-6 pb-24">
-      <IncomeSection income={income} />
-
+      <IncomeSection  />
       <SummaryCards 
         income={totalIncome}
         expenses={totalExpenses}
         balance={balance}
       />
-
       <div className="bg-white p-4 rounded-lg shadow">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Expenses</h2>

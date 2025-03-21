@@ -12,17 +12,15 @@ import {
 } from "@/components/ui/table";
 import { Expense } from "./ExpenseDialog";
 import NotesDialog from "./NotesDialog";
-import { Checkbox } from "@radix-ui/react-checkbox";
 import { useUpdateExpense } from "@/queries/updateExpenses";
 
 interface ExpensesTableProps {
   expenses: Expense[];
   onEdit: (expense: Expense) => void;
   onDelete: (id: string, category: string) => void;
-  onDataChange: () => void;
 }
 
-const ExpensesTable = ({ expenses, onEdit, onDelete, onDataChange }: ExpensesTableProps) => {
+const ExpensesTable = ({ expenses, onEdit, onDelete }: ExpensesTableProps) => {
   const { mutate } = useUpdateExpense();
 
   const [isNotesDialogOpen, setIsNotesDialogOpen] = useState(false);
@@ -123,7 +121,6 @@ const ExpensesTable = ({ expenses, onEdit, onDelete, onDataChange }: ExpensesTab
           expenseId={selectedExpense.id}
           expenseName={selectedExpense.name}
           initialNote={selectedExpense.notes || ""}
-          onSuccess={onDataChange}
         />
       )}
     </div>

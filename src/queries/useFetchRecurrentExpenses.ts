@@ -8,7 +8,7 @@ export const useFetchRecurrentExpenses = () => {
       const { data, error } = await supabase
         .from("recurrent_expenses")
         .select("*")
-        .order("date", { ascending: false });
+        .order("created_at", { ascending: false });
       
       if (error) {
         throw new Error(error.message);
