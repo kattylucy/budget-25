@@ -1,5 +1,4 @@
 
-import React from "react";
 
 export interface Expense {
   id: string;
@@ -11,8 +10,7 @@ export interface Expense {
   savingsAccount?: string;
   bank_account?: string;
   notes?: string | null;
-  currency_symbol?: string; // Added to track if the amount was converted from Euro
-  is_favorite?: boolean; // Added to support favorite functionality
+  is_paid?: boolean;
 }
 
 export interface Income {
@@ -22,5 +20,3 @@ export interface Income {
   tag?: string;
 }
 
-// This file defines interfaces that will be used across components
-// It doesn't contain any functional component on its own

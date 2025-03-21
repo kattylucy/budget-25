@@ -20,7 +20,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Button } from "@/components/ui/button";
-import { CalculatorIcon, ClockIcon, RefreshCw } from "lucide-react";
+import {  RefreshCw } from "lucide-react";
 
 interface ExpensesListProps {
   expenses: (SelectableExpense | SelectableRecurrentExpense | any)[];
@@ -126,18 +126,10 @@ export const ExpensesList = ({
                     <TableCell className="hidden sm:table-cell py-2 sm:py-4">
                       {'date' in expense && expense.date 
                         ? new Date(expense.date).toLocaleDateString() 
-                        : "N/A"}
+                        : "-"}
                     </TableCell>
                   )}
                   <TableCell className="hidden sm:table-cell py-2 sm:py-4">{expense.bank_account || "Apple"}</TableCell>
-                  <TableCell className="py-2 sm:py-4">
-                    {expense.isRecurring && (
-                      <div className="tooltip-container relative">
-                        <ClockIcon className="h-4 w-4 text-blue-500" />
-                        <span className="sr-only">Recurring expense</span>
-                      </div>
-                    )}
-                  </TableCell>
                 </TableRow>
               ))
             )}

@@ -18,7 +18,6 @@ export interface RecurrentExpense {
   bank_account?: string;
   created_at: string;
   is_deleted?: boolean;
-  currency_symbol?: string; // Added currency_symbol property
 }
 
 const RecurrentExpensesPage = () => {
@@ -56,9 +55,9 @@ const RecurrentExpensesPage = () => {
     try {
       const { error } = await supabase
         .from("recurrent_expenses")
-        .update({ is_deleted: true })
+        .delete()
         .eq("id", id);
-
+  
       if (error) throw error;
       
       toast.success("Recurrent expense deleted successfully");
@@ -67,7 +66,7 @@ const RecurrentExpensesPage = () => {
       console.error("Error deleting recurrent expense:", error);
       toast.error("Failed to delete recurrent expense. Please try again.");
     }
-  };
+  };  
 
   const totalMonthlyExpenses = (recurrentExpenses || []).reduce(
     (total, expense) => total + expense.amount,

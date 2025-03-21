@@ -65,6 +65,7 @@ export type Database = {
           notes: string | null
           savings_account: string | null
           user_id: string | null
+          is_paid: boolean
         }
         Insert: {
           amount: number
@@ -79,6 +80,7 @@ export type Database = {
           notes?: string | null
           savings_account?: string | null
           user_id?: string | null
+          is_paid: boolean
         }
         Update: {
           amount?: number
@@ -93,6 +95,7 @@ export type Database = {
           notes?: string | null
           savings_account?: string | null
           user_id?: string | null
+          is_paid: boolean
         }
         Relationships: []
       }

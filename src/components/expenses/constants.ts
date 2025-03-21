@@ -4,12 +4,21 @@ export const categories = [
   "Travel",
   "Eating Out",
   "Personal",
-  "Groceries"
+  "Groceries",
+  "Savings"
 ];
 
 export const bankAccounts = [
   "Apple",
   "Chase",
-  "EURO",
-  "Betterment"
+  "Euro",
+  "Betterment",
+  "Cash",
+];
+
+export const savingsAccounts = [
+  "Baby",
+  "Cash capital one",
+  "401k",
+  "Emergency fund",
 ];

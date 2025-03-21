@@ -1,6 +1,6 @@
 
-import React, { useState } from "react";
-import { Pencil, Trash, MessageSquare } from "lucide-react";
+import { useState } from "react";
+import { Pencil, Trash, MessageSquare, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -11,9 +11,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Expense } from "./ExpenseDialog";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 import NotesDialog from "./NotesDialog";
+import { Checkbox } from "@radix-ui/react-checkbox";
+import { useUpdateExpense } from "@/queries/updateExpenses";
 
 interface ExpensesTableProps {
   expenses: Expense[];
@@ -23,12 +23,22 @@ interface ExpensesTableProps {
 }
 
 const ExpensesTable = ({ expenses, onEdit, onDelete, onDataChange }: ExpensesTableProps) => {
+  const { mutate } = useUpdateExpense();
+
   const [isNotesDialogOpen, setIsNotesDialogOpen] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
 
   const handleOpenNotesDialog = (expense: Expense) => {
     setSelectedExpense(expense);
     setIsNotesDialogOpen(true);
+  };
+
+  const handlePaid = (expense: Expense) => {
+    const updateParams = {
+      is_paid: !expense.is_paid,
+    };
+
+    mutate({ id: expense.id, updateData: updateParams });
   };
 
   return (
@@ -67,11 +77,18 @@ const ExpensesTable = ({ expenses, onEdit, onDelete, onDataChange }: ExpensesTab
                 </TableCell>
                 <TableCell className="text-right py-2 sm:py-4">
                   <div className="flex justify-end gap-1">
+                  <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handlePaid(expense)}
+                      className={expense.is_paid ? "text-green-500" : "text-black-500"}
+                    >
+                      <Check className="h-3 w-3 sm:h-4 sm:w-4" />
+                    </Button>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => handleOpenNotesDialog(expense)}
-                      className="h-7 w-7 sm:h-8 sm:w-8 p-0"
                     >
                       <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>

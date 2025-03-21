@@ -60,32 +60,21 @@ const ExpensesList = ({
 
   const deleteExpense = async (id: string, category: string) => {
     try {
-      // Delete from expenses table
-      const { error: expenseError } = await supabase
+      await supabase
         .from("expenses")
         .delete()
         .eq("id", id);
-
-      if (expenseError) throw expenseError;
       
-      // If this is a savings expense, also delete from the savings table
       if (category === "Savings") {
-        const { error: savingsError } = await supabase
+        await supabase
           .from("savings")
           .delete()
           .eq("id", id);
-
-        if (savingsError) {
-          console.error("Error deleting savings record:", savingsError);
-          // Continue even if there's an error with savings deletion
-          // At least the expense was deleted
-        }
       }
       
       toast.success("Expense deleted successfully");
       onDataChange();
     } catch (error) {
-      console.error("Error deleting expense:", error);
       toast.error("Failed to delete expense. Please try again.");
     }
   };

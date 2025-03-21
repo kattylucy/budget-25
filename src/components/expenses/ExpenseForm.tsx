@@ -12,6 +12,7 @@ import CategoryField from "./form-fields/CategoryField";
 import AmountField from "./form-fields/AmountField";
 import DateField from "./form-fields/DateField";
 import { BankAccountField } from "./form-fields/BankAccountField";
+import { SavingsAccountField } from "./form-fields/SavingsAccountField";
 
 interface ExpenseFormProps {
   currentExpense: Expense | null;
@@ -28,6 +29,8 @@ const ExpenseForm = ({
 }: ExpenseFormProps) => {
   const { form, onSubmit, selectedCategory, isSubmitting } = useExpenseForm(currentExpense, onSuccess);
 
+  console.log(selectedCategory);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -36,12 +39,12 @@ const ExpenseForm = ({
           form={form} 
           onCategoryChange={(value) => {}}
         />
-        
+        {selectedCategory === "Savings" && (
+          <SavingsAccountField form={form} />
+        )}
         <AmountField form={form} />
         <DateField form={form} />
-        
         <BankAccountField form={form} />
-        
         <DialogFooter>
           <Button variant="outline" type="button" onClick={onCancel} disabled={isSubmitting}>
             Cancel

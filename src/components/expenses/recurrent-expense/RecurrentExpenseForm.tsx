@@ -1,5 +1,4 @@
 
-import React from "react";
 import { UseFormReturn } from "react-hook-form";
 import { RecurrentExpenseFormValues } from "../schemas/recurrentExpenseSchema";
 import { Button } from "@/components/ui/button";
@@ -12,14 +11,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { categories, bankAccounts } from "../constants";
 import NameField from "../form-fields/NameField";
 import CategoryField from "../form-fields/CategoryField";
 import { BankAccountField } from "../form-fields/BankAccountField";
@@ -36,7 +27,6 @@ interface RecurrentExpenseFormProps {
 
 export const RecurrentExpenseForm = ({
   form,
-  isSavingsCategory,
   isSubmitting,
   onCategoryChange,
   onSubmit,
@@ -50,7 +40,6 @@ export const RecurrentExpenseForm = ({
 
         <CategoryField form={form} onCategoryChange={onCategoryChange} />
 
-        {/* Amount field */}
         <FormField
           control={form.control}
           name="amount"

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Wallet, BookOpen, Calendar, Calculator, 
-  Users, Briefcase, LogOut
+  Users,  LogOut
 } from "lucide-react";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";

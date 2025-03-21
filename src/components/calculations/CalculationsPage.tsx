@@ -55,7 +55,6 @@ const CalculationsPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedExpenses, setSelectedExpenses] = useState<{[key: string]: boolean}>({});
   const [selectedRecurrentExpenses, setSelectedRecurrentExpenses] = useState<{[key: string]: boolean}>({});
-  const [selectType, setSelectType] = useState<"bankAccount">("bankAccount");
   const [expenseType, setExpenseType] = useState<"regular" | "recurrent" | "all">("all");
 
   // Query for regular expenses
@@ -316,22 +315,6 @@ const CalculationsPage = () => {
     const totalAmount = regularTotal + recurrentTotal;
     
     toast.success(`Total for selected expenses: $${totalAmount.toFixed(2)}`);
-  };
-
-  // Manual refresh button handler
-  const handleRefresh = () => {
-    setIsLoading(true);
-    Promise.all([refetchExpenses(), refetchRecurrent()])
-      .then(() => {
-        toast.success("Data refreshed successfully");
-      })
-      .catch(error => {
-        console.error("Error refreshing data:", error);
-        toast.error("Failed to refresh data");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
   };
 
   return (
