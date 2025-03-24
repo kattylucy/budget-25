@@ -16,8 +16,6 @@ interface FilterPanelProps {
   setSearchQuery: (query: string) => void;
   bankFilter: string;
   setBankFilter: (bank: string) => void;
-  hideSavings: boolean;
-  setHideSavings: (hide: boolean) => void;
   bankAccounts: string[];
 }
 
@@ -26,8 +24,6 @@ const FilterPanel = ({
   setSearchQuery,
   bankFilter,
   setBankFilter,
-  hideSavings,
-  setHideSavings,
   bankAccounts,
 }: FilterPanelProps) => {
   return (
@@ -56,14 +52,6 @@ const FilterPanel = ({
         </Select>
       </div>
 
-      <div className="flex items-center space-x-2">
-        <Switch 
-          id="hide-savings" 
-          checked={hideSavings} 
-          onCheckedChange={setHideSavings}
-        />
-        <Label htmlFor="hide-savings">Hide savings</Label>
-      </div>
     </div>
   );
 };

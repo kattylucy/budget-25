@@ -70,9 +70,8 @@ const ExpensesPage = () => {
 
       <ExpenseFormDialog 
         isOpen={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
         currentExpense={currentExpense}
-        income={totalIncome}
+        toggleModal={(val) => setIsDialogOpen(val)}
       />
 
       <CloseMonthDialog 

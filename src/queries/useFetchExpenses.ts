@@ -13,7 +13,7 @@ export const useFetchExpenses = () => {
       if (error) {
         throw new Error(error.message);
       }
-      return data;
+      return data.filter(expense => !expense.is_deleted);
     }
   });
 };

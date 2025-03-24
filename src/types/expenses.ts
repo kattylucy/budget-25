@@ -18,6 +18,17 @@ export interface Income {
   tag?: string;
 }
 
+export interface CreateExpense {
+  name: string;
+  category: string;
+  amount: number;
+  date: string;
+  is_deleted: boolean;
+  savings_account: string;
+  bank_account: string;
+  is_paid: boolean;
+}
+
 
 export interface ExpensesListProps {
     expenses: Expense[];

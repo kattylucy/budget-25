@@ -1,8 +1,5 @@
 
 import React, { useState } from "react";
-import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
-import { Expense } from "./ExpenseDialog";
 import FilterPanel from "./FilterPanel";
 import ExpensesTable from "./ExpensesTable";
 import { useExpensesFiltering } from "./useExpensesFiltering";
@@ -34,11 +31,9 @@ const ExpensesList = ({
     setSearchQuery,
     bankFilter,
     setBankFilter,
-    hideSavings,
-    setHideSavings,
     bankAccounts,
     filteredExpenses
-  } = useExpensesFiltering(expenses);
+  } = useExpensesFiltering();
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -51,7 +46,7 @@ const ExpensesList = ({
 
   React.useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, bankFilter, hideSavings]);
+  }, [searchQuery, bankFilter]);
 
   const deleteExpense = async (id: string, category: string) => {
     mutateAsync(id)
@@ -73,8 +68,6 @@ const ExpensesList = ({
         setSearchQuery={setSearchQuery}
         bankFilter={bankFilter}
         setBankFilter={setBankFilter}
-        hideSavings={hideSavings}
-        setHideSavings={setHideSavings}
         bankAccounts={bankAccounts}
       />
       
@@ -94,7 +87,7 @@ const ExpensesList = ({
                   onClick={(e) => {
                     e.preventDefault();
                     setCurrentPage(prev => Math.max(prev - 1, 1));
-                  }} 
+                  }}
                 />
               </PaginationItem>
             ) : (

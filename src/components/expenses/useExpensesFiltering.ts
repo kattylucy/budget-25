@@ -2,8 +2,10 @@
 import { useMemo, useState } from "react";
 import { Expense } from "./ExpenseDialog";
 import { bankAccounts } from "./constants";
+import { useFetchExpenses } from "@/queries/useFetchExpenses";
 
-export const useExpensesFiltering = (expenses: Expense[]) => {
+export const useExpensesFiltering = () => {
+  const { data: expenses } = useFetchExpenses()
   const [searchQuery, setSearchQuery] = useState("");
   const [bankFilter, setBankFilter] = useState<string>("all");
   const [hideSavings, setHideSavings] = useState(false);
@@ -56,8 +58,6 @@ export const useExpensesFiltering = (expenses: Expense[]) => {
     setSearchQuery,
     bankFilter,
     setBankFilter,
-    hideSavings,
-    setHideSavings,
     bankAccounts: availableBankAccounts,
     filteredExpenses
   };
