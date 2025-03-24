@@ -86,7 +86,6 @@ const RecurrentExpensesPage = () => {
               expenses={recurrentExpenses || []}
               searchQuery={searchQuery}
               bankFilter={bankFilter}
-              hideSavings={hideSavings}
               onEdit={openExpenseDialog}
               onDelete={deleteExpense}
             />

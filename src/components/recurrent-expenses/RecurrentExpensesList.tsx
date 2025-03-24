@@ -24,7 +24,6 @@ interface RecurrentExpensesListProps {
   expenses: RecurrentExpense[];
   searchQuery: string;
   bankFilter: string;
-  hideSavings: boolean;
   onEdit: (expense: RecurrentExpense) => void;
   onDelete: (id: string) => void;
 }
@@ -35,7 +34,6 @@ export const RecurrentExpensesList = ({
   expenses,
   searchQuery,
   bankFilter,
-  hideSavings,
   onEdit,
   onDelete,
 }: RecurrentExpensesListProps) => {
@@ -50,9 +48,6 @@ export const RecurrentExpensesList = ({
       );
     }
     
-    if (hideSavings) {
-      filtered = filtered.filter(expense => expense.category.toLowerCase() !== "savings");
-    }
     
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
@@ -65,11 +60,11 @@ export const RecurrentExpensesList = ({
     }
     
     return filtered;
-  }, [expenses, searchQuery, bankFilter, hideSavings]);
+  }, [expenses, searchQuery, bankFilter]);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, bankFilter, hideSavings]);
+  }, [searchQuery, bankFilter]);
 
   const totalPages = Math.ceil(filteredExpenses.length / ITEMS_PER_PAGE);
   
