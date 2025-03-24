@@ -1,5 +1,5 @@
 
-import React, { useMemo } from "react";
+import  { useMemo } from "react";
 import TableSearch from "@/components/ui/table-search";
 import {
   Select,
@@ -8,8 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { RecurrentExpense } from "./RecurrentExpensesPage";
 
 interface RecurrentExpenseFiltersProps {
@@ -17,8 +15,6 @@ interface RecurrentExpenseFiltersProps {
   onSearchChange: (value: string) => void;
   bankFilter: string;
   onBankFilterChange: (value: string) => void;
-  hideSavings: boolean;
-  onHideSavingsChange: (value: boolean) => void;
   expenses: RecurrentExpense[];
 }
 
@@ -27,8 +23,6 @@ export const RecurrentExpenseFilters = ({
   onSearchChange,
   bankFilter,
   onBankFilterChange,
-  hideSavings,
-  onHideSavingsChange,
   expenses,
 }: RecurrentExpenseFiltersProps) => {
   const bankAccounts = useMemo(() => {
@@ -67,14 +61,7 @@ export const RecurrentExpenseFilters = ({
         </Select>
       </div>
 
-      <div className="flex items-center space-x-2">
-        <Switch 
-          id="hide-savings" 
-          checked={hideSavings} 
-          onCheckedChange={onHideSavingsChange}
-        />
-        <Label htmlFor="hide-savings">Hide savings</Label>
-      </div>
+    
     </div>
   );
 };

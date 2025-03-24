@@ -1,14 +1,12 @@
 
-import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 import { RecurrentExpenseFilters } from "./RecurrentExpenseFilters";
 import { RecurrentExpensesList } from "./RecurrentExpensesList";
 import { RecurrentExpenseSummary } from "./RecurrentExpenseSummary";
-import RecurrentExpenseDialog from "../expenses/RecurrentExpenseDialog";
+import ExpenseFormDialog from "../expenses/ExpenseFormDialog";
+import { useFetchRecurrentExpenses } from "@/queries/useFetchRecurrentExpenses";
+import { useDeleteRecurrentExpense } from "@/queries/useDeletecurrentExpenses";
 
 export interface RecurrentExpense {
   id: string;
@@ -21,30 +19,12 @@ export interface RecurrentExpense {
 }
 
 const RecurrentExpensesPage = () => {
+  const { data: recurrentExpenses, isLoading } = useFetchRecurrentExpenses()
+  const { mutate } = useDeleteRecurrentExpense()
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentExpense, setCurrentExpense] = useState<RecurrentExpense | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [bankFilter, setBankFilter] = useState<string>("all");
-  const [hideSavings, setHideSavings] = useState(false);
-
-  const { data: recurrentExpenses, isLoading, refetch } = useQuery({
-    queryKey: ["recurrent-expenses"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("recurrent_expenses")
-        .select("*")
-        .eq("is_deleted", false)
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error("Error fetching recurrent expenses:", error);
-        throw error;
-      }
-      
-      console.log("Recurrent expenses data:", data);
-      return (data || []) as RecurrentExpense[];
-    },
-  });
 
   const openExpenseDialog = (expense: RecurrentExpense | null = null) => {
     setCurrentExpense(expense);
@@ -53,17 +33,8 @@ const RecurrentExpensesPage = () => {
 
   const deleteExpense = async (id: string) => {
     try {
-      const { error } = await supabase
-        .from("recurrent_expenses")
-        .delete()
-        .eq("id", id);
-  
-      if (error) throw error;
-      
-      toast.success("Recurrent expense deleted successfully");
-      refetch();
+      mutate(id)
     } catch (error) {
-      console.error("Error deleting recurrent expense:", error);
       toast.error("Failed to delete recurrent expense. Please try again.");
     }
   };  
@@ -72,6 +43,11 @@ const RecurrentExpensesPage = () => {
     (total, expense) => total + expense.amount,
     0
   );
+
+  const toggleModal = (boolean) => {
+    setIsDialogOpen(boolean)
+    setCurrentExpense(null)
+  }
 
   return (
     <div className="space-y-6 pb-20 max-w-4xl mx-auto">
@@ -103,8 +79,6 @@ const RecurrentExpensesPage = () => {
               onSearchChange={setSearchQuery}
               bankFilter={bankFilter}
               onBankFilterChange={setBankFilter}
-              hideSavings={hideSavings}
-              onHideSavingsChange={setHideSavings}
               expenses={recurrentExpenses || []}
             />
             
@@ -120,11 +94,11 @@ const RecurrentExpensesPage = () => {
         )}
       </div>
 
-      <RecurrentExpenseDialog
-        isOpen={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-        currentExpense={currentExpense}
-        onSuccess={() => refetch()}
+      <ExpenseFormDialog 
+       isRecurring
+       currentExpense={currentExpense}  
+       isOpen={isDialogOpen} 
+       toggleModal={toggleModal}
       />
     </div>
   );
